@@ -1,6 +1,6 @@
 da-charging-connectors
 ============
-[![GitHub Stars](https://img.shields.io/github/stars/deepatlas/da-charging-connectors?style=social)](https://github.com/deepatlas/da-charging-connectors/stargazers) [![GitHub Issues](https://img.shields.io/bitbucket/issues-raw/deepatlas/da-charging-connects)](https://github.com/deepatlas/da-charging-connects/issues) [![GitHub Pulls](https://img.shields.io/bitbucket/pr-raw/deepatlas/da-charging-connects)](https://github.com/deepatlas/da-charging-connects/pulls) [![Current Version](https://img.shields.io/badge/version-0.0.1-green.svg)](https://github.com/deepatlas/da-charging-data) [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![GitHub Stars](https://img.shields.io/github/stars/deepatlas/da-charging-connectors?style=social)](https://github.com/deepatlas/da-charging-connectors/stargazers) [![GitHub Issues](https://img.shields.io/github/issues-raw/deepatlas/da-charging-connectors)](https://github.com/deepatlas/da-charging-connects/issues) [![GitHub Pulls](https://img.shields.io/github/issues-pr/deepatlas/da-charging-connectors)](https://github.com/deepatlas/da-charging-connects/pulls) [![Current Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/deepatlas/da-charging-data) [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
 
 Collects, cleans and structures charging station information in and around Germany from various sources.
 ## Installation
