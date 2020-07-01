@@ -1,0 +1,4 @@
+include tests/test*.py
+include *.md
+include LICENSE
+recursive-include data test_*.json
