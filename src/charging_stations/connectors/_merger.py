@@ -9,7 +9,7 @@ from shapely import wkt
 from typing import List, Dict, Union
 from shapely.geometry.base import BaseGeometry
 from tqdm import tqdm
-from charging_stations.helpers import get_logger, object_hook
+from ..helpers import get_logger, object_hook
 from difflib import SequenceMatcher
 
 log = get_logger(os.path.basename(__file__))

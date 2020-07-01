@@ -4,8 +4,8 @@ import os
 import requests
 from numbers import Number
 from typing import Callable, Dict, List, Union
-from charging_stations.helpers import get_logger, default
-from charging_stations.connectors._connector import Connector
+from ..helpers import get_logger, default
+from ._connector import Connector
 
 log = get_logger(os.path.basename(__file__))
 

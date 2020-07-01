@@ -9,9 +9,9 @@ import yarl
 from typing import Dict, List, Union
 from numbers import Number
 from bs4 import BeautifulSoup, ResultSet
-from charging_stations.connectors._ocm import OCMConnector
-from charging_stations.helpers import get_logger
-from charging_stations.helpers import default
+from ._ocm import OCMConnector
+from ..helpers import get_logger
+from ..helpers import default
 
 log = get_logger(os.path.basename(__file__))
 

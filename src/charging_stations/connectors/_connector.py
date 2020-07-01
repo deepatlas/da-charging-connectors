@@ -1,7 +1,7 @@
 import json
 from abc import ABC, abstractmethod
 from typing import List
-from charging_stations.helpers import default, object_hook
+from ..helpers import default, object_hook
 
 
 class Connector(ABC):

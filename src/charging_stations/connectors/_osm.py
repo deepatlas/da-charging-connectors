@@ -5,8 +5,8 @@ import string
 import requests
 from numbers import Number
 from typing import Dict, List, Union, Callable
-from charging_stations.connectors._ocm import OCMConnector
-from charging_stations.helpers import get_logger, default
+from ._ocm import OCMConnector
+from ..helpers import get_logger, default
 
 log = get_logger(os.path.basename(__file__))
 
