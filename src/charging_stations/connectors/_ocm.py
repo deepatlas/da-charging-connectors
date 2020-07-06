@@ -3,7 +3,7 @@ import json
 import os
 import requests
 from numbers import Number
-from typing import Callable, Dict, List, Union
+from typing import Callable, Dict, List, Optional
 from ..helpers import get_logger, default
 from ._connector import Connector
 
@@ -63,11 +63,11 @@ class OCMConnector(Connector):
             raise RuntimeError("Load or get raw data first!")
 
         for station_raw in self.raw_data:
-            addressInfo: Union[Dict, None] = station_raw.get("AddressInfo")
+            addressInfo: Optional[Dict] = station_raw.get("AddressInfo")
             raw_data: str = json.dumps(
                 station_raw, sort_keys=True, ensure_ascii=True, default=default
             )
-            ocm_id: Union[int, None] = addressInfo.get("ID")
+            ocm_id: Optional[int] = addressInfo.get("ID")
             id_hash: hashlib._Hash = hashlib.sha256(
                 str(ocm_id).encode("utf8")
                 if ocm_id is not None
@@ -142,7 +142,7 @@ class OCMConnector(Connector):
         authentication: str = ";".join(
             [f"{k}:{v}" for k, v in station_raw["UsageType"].items()]
         ) if isinstance(station_raw["UsageType"], dict) else None
-        operator: Union[str, None] = station_raw["OperatorInfo"].get(
+        operator: Optional[str] = station_raw["OperatorInfo"].get(
             "Title", None
         ) if isinstance(station_raw["OperatorInfo"], dict) else None
         station: Dict = dict(
@@ -170,15 +170,15 @@ class OCMConnector(Connector):
             for connection in connections:
                 currentType: Dict = connection.get("CurrentType")
                 if currentType is not None:
-                    socket_title: Union[str, None] = currentType.get("Title")
+                    socket_title: Optional[str] = currentType.get("Title")
                     if socket_title is not None:
                         socket_type_list += [socket_title]
-                kw: Union[float, None] = connection.get("PowerKW")
-                ampere: Union[float, None] = connection.get("Amps")
-                volt: Union[float, None] = connection.get("Voltage")
-                quantity: Union[int, None] = connection.get(
+                kw: Optional[float] = connection.get("PowerKW")
+                ampere: Optional[float] = connection.get("Amps")
+                volt: Optional[float] = connection.get("Voltage")
+                quantity: Optional[int] = connection.get("Quantity") if connection.get(
                     "Quantity"
-                ) if connection.get("Quantity") is not None else 1
+                ) is not None else 1
                 metric_list: List[List]
                 metric: float
                 for metric_list, metric in zip(
@@ -204,8 +204,8 @@ class OCMConnector(Connector):
     def _create_address(
         self, addressInfo: Dict, identifier: bytes, station_raw: Dict
     ) -> Dict:
-        country: Union[Dict, None] = addressInfo.get("Country")
-        postcode: Union[str, None] = addressInfo.get(
+        country: Optional[Dict] = addressInfo.get("Country")
+        postcode: Optional[str] = addressInfo.get(
             "Postcode",
         ) if addressInfo is not None else None
         postcode = (
@@ -213,20 +213,18 @@ class OCMConnector(Connector):
             if postcode is not None
             else ""
         )
-        town: Union[str, None] = addressInfo.get(
+        town: Optional[str] = addressInfo.get(
             "Town",
         ) if addressInfo is not None else None
         if town is None:
             town = ""
-        state: Union[str, None] = addressInfo.get(
+        state: Optional[str] = addressInfo.get(
             "StateOrProvince"
         ) if addressInfo is not None else None
         if state is None:
             state = ""
-        country: Union[str, None] = country.get(
-            "ISOCode"
-        ) if country is not None else None
-        street: Union[str, None] = addressInfo.get(
+        country: Optional[str] = country.get("ISOCode") if country is not None else None
+        street: Optional[str] = addressInfo.get(
             "street"
         ) if addressInfo is not None else None
         if len(postcode) != 5:

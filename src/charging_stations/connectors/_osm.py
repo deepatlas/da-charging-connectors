@@ -4,7 +4,7 @@ import os
 import string
 import requests
 from numbers import Number
-from typing import Dict, List, Union, Callable
+from typing import Dict, List, Callable, Optional
 from ._ocm import OCMConnector
 from ..helpers import get_logger, default
 
@@ -34,7 +34,7 @@ class OSMConnector(OCMConnector):
         list_string: str,
         transform_fn: Callable = int,
         separator_list: List[str] = [":", ",", "/"],
-    ) -> Union[List[Number], None]:
+    ) -> Optional[List[Number]]:
         """
         Turns a string, which contains seperated digits e.g. "12;3,5;" with several seperators",
         into a list of e.g. int or floats - depending on transform_fn.
@@ -91,7 +91,7 @@ class OSMConnector(OCMConnector):
                 station_raw, sort_keys=True, ensure_ascii=True, default=default
             )
 
-            osm_id: Union[int, None] = station_raw.get("id")
+            osm_id: Optional[int] = station_raw.get("id")
             id_hash: hashlib._Hash = hashlib.sha256(
                 str(osm_id).encode("utf8")
                 if osm_id is not None
@@ -144,10 +144,10 @@ class OSMConnector(OCMConnector):
         latitude: float = self.check_coordinates(station_raw["lat"])
         longitude: float = self.check_coordinates(station_raw["lon"])
         coordinates: str = f"POINT({longitude} {latitude})"
-        tags: Union[Dict, None] = station_raw.get("tags")
-        authentication: Union[str, None] = None
-        operator: Union[str, None] = None
-        payment: Union[str, None] = None
+        tags: Optional[Dict] = station_raw.get("tags")
+        authentication: Optional[str] = None
+        operator: Optional[str] = None
+        payment: Optional[str] = None
         if tags is not None:
             auth_key_value_strings: List[str] = [
                 f"{k.replace('authentication:','')}:{v}"
@@ -181,11 +181,11 @@ class OSMConnector(OCMConnector):
 
     def _create_charging(self, identifier: bytes, station_raw: Dict) -> Dict:
         # TODO: kw_list computation, dc_support
-        tags: Union[Dict, None] = station_raw.get("tags")
-        capacity: Union[int, None] = None
+        tags: Optional[Dict] = station_raw.get("tags")
+        capacity: Optional[int] = None
         kw_list: List[float] = []
-        ampere_list: Union[List[float], None] = []
-        volt_list: Union[List[float], None] = []
+        ampere_list: Optional[List[float]] = []
+        volt_list: Optional[List[float]] = []
         socket_type_list: List[str] = []
         dc_support: bool = False
         if tags is not None:
@@ -234,20 +234,20 @@ class OSMConnector(OCMConnector):
 
     def _create_address(self, identifier: bytes, station_raw: Dict) -> Dict:
         tags: Dict = station_raw.get("tags", None)
-        country: Union[str, None] = None
-        street: Union[str, None] = None
-        postcode: Union[str, None] = None
-        town: Union[str, None] = None
-        state: Union[str, None] = None
-        house_number: Union[str, None] = None
+        country: Optional[str] = None
+        street: Optional[str] = None
+        postcode: Optional[str] = None
+        town: Optional[str] = None
+        state: Optional[str] = None
+        house_number: Optional[str] = None
         if tags is not None:
-            country: Union[str, None] = tags.get(
+            country: Optional[str] = tags.get(
                 "addr:country", "DE"
             )  # TODO: check this one
-            street: Union[str, None] = tags.get("addr:street")
-            postcode: Union[str, None] = tags.get("addr:postcode")
-            town: Union[str, None] = tags.get("addr:city", "")
-            state: Union[str, None] = tags.get("addr:state", "")  # TODO: check this one
+            street: Optional[str] = tags.get("addr:street")
+            postcode: Optional[str] = tags.get("addr:postcode")
+            town: Optional[str] = tags.get("addr:city", "")
+            state: Optional[str] = tags.get("addr:state", "")  # TODO: check this one
             house_number = tags.get("addr:housenumber") if tags is not None else None
         if town is None:
             town = ""

@@ -6,7 +6,7 @@ import os
 import pandas as pd
 import requests
 import yarl
-from typing import Dict, List, Union
+from typing import Dict, List, Optional
 from numbers import Number
 from bs4 import BeautifulSoup, ResultSet
 from ._ocm import OCMConnector
@@ -143,7 +143,7 @@ class BNAConnector(OCMConnector):
         return station
 
     def _create_charging(self, identifier: bytes, station_raw: Dict) -> Dict:
-        total_kw: Union[float, None] = station_raw.get("Anschlussleistung [kW]", None)
+        total_kw: Optional[float] = station_raw.get("Anschlussleistung [kW]", None)
         if isinstance(total_kw, str):
             try:
                 total_kw = float(total_kw.replace(",", "."))
@@ -186,7 +186,7 @@ class BNAConnector(OCMConnector):
             if isinstance(v, Number):
                 kw_list += [v]
 
-        capacity: Union[int, None] = station_raw.get("Anzahl Ladepunkte")
+        capacity: Optional[int] = station_raw.get("Anzahl Ladepunkte")
         if len(kw_list) != station_raw.get("Anzahl Ladepunkte"):
             log.warning(f"kw_list {kw_list} length does not equal capacity {capacity}!")
 
@@ -226,8 +226,8 @@ class BNAConnector(OCMConnector):
         return charging
 
     def _create_address(self, identifier: bytes, station_raw: Dict) -> Dict:
-        postcode: Union[str, None]
-        town: Union[str, None]
+        postcode: Optional[str]
+        town: Optional[str]
         state: str
         country: str
         street: str = station_raw.get("Adresse")

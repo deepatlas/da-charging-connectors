@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from libpysal.weights.distance import KNN
 from shapely import wkt
-from typing import List, Dict, Union
+from typing import List, Dict, Optional
 from shapely.geometry.base import BaseGeometry
 from tqdm import tqdm
 from ..helpers import get_logger, object_hook
@@ -24,9 +24,9 @@ class Merger(object):
     ):
         self.base_path: str = base_path
         self.data_sources: List[Dict] = []
-        self.stations_gdf: Union[gpd.GeoDataFrame, None] = None
-        self.knn3: Union[KNN, None] = None
-        self.merged_stations_gdf: Union[gpd.GeoDataFrame, None] = None
+        self.stations_gdf: Optional[gpd.GeoDataFrame] = None
+        self.knn3: Optional[KNN] = None
+        self.merged_stations_gdf: Optional[gpd.GeoDataFrame] = None
 
     def _load_data(self, is_test: bool = False) -> "Merger":
         """
@@ -88,7 +88,7 @@ class Merger(object):
         :return: gpd.GeoDataFrame
         """
 
-        def get_wkt(x: str) -> Union[BaseGeometry, None]:
+        def get_wkt(x: str) -> Optional[BaseGeometry]:
             try:
                 return wkt.loads(x)
             except:
@@ -171,7 +171,7 @@ class Merger(object):
         duplicate_candidates: pd.DataFrame,
         score_threshold: float = 0.49,
         max_distance: int = 100,
-        score_weights: Union[Dict[str, float], None] = None,
+        score_weights: Optional[Dict[str, float]] = None,
     ) -> pd.DataFrame:
         score_weights = (
             score_weights
@@ -283,7 +283,7 @@ class Merger(object):
         stations_list: List[Dict] = None,
         score_threshold: float = 0.49,
         max_distance: int = 100,
-        score_weights: Union[Dict, None] = None,
+        score_weights: Optional[Dict] = None,
     ) -> "Merger":
         score_weights = (
             score_weights
